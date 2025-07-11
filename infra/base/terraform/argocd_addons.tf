@@ -41,3 +41,37 @@ resource "kubectl_manifest" "nvidia_dcgm_helm" {
     module.eks_blueprints_addons
   ]
 }
+
+resource "kubectl_manifest" "cert_manager_yaml" {
+  count     = var.enable_cert_manager ? 1 : 0
+  yaml_body = file("${path.module}/argocd-addons/cert-manager.yaml")
+
+  depends_on = [
+    module.eks_blueprints_addons
+  ]
+}
+
+resource "kubectl_manifest" "slurm_operator_yaml" {
+  count     = var.enable_slurm_operator ? 1 : 0
+  yaml_body = file("${path.module}/argocd-addons/slinky-slurm/slurm-operator.yaml")
+
+  depends_on = [
+    module.eks_blueprints_addons
+  ]
+}
+
+resource "kubectl_manifest" "slurm_cluster_yaml" {
+  count     = var.deploy_slurm_cluster ? 1 : 0
+  yaml_body = templatefile("${path.module}/argocd-addons/slinky-slurm/slurm-cluster.yaml", {
+    image_repository = var.image_repository
+    image_tag = var.image_tag
+    ssh_key = var.ssh_key
+    az_id = data.aws_availability_zones.available.zone_ids[0]
+    }
+  )
+
+  depends_on = [
+    module.eks_blueprints_addons,
+    kubectl_manifest.slurm_operator_yaml
+  ]
+}

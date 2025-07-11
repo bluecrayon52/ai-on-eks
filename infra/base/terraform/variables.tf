@@ -86,6 +86,11 @@ variable "deploy_fsx_volume" {
   type        = bool
   default     = false
 }
+variable "fsx_pvc_namespace" {
+  description = "Namespace for FSx PVC"
+  type        = string
+  default     = "default"
+}
 variable "enable_amazon_prometheus" {
   description = "Enable Amazon Prometheus"
   type        = bool
@@ -258,4 +263,41 @@ variable "aibrix_stack_version" {
   description = "AIBrix default version"
   type        = string
   default     = "v0.2.1"
+}
+
+# Slinky Slurm Specific Variables
+variable "enable_cert_manager" {
+  description = "Enable cert-manager addon"
+  type        = bool
+  default     = false
+}
+
+variable "enable_slurm_operator" {
+  description = "Enable slurm-operator addon"
+  type        = bool
+  default     = false
+}
+
+variable "deploy_slurm_cluster" {
+  description = "Deploy default slurm cluster"
+  type        = bool
+  default     = false
+}
+
+variable "image_repository" {
+  description = "Repository for the slurmd container image"
+  type        = string
+  default     = ""
+}
+
+variable "image_tag" {
+  description = "Tag for the slurmd container image"
+  type        = string
+  default     = ""
+}
+
+variable "ssh_key" {
+  description = "SSH key for login pod access"
+  type        = string
+  default     = ""
 }
