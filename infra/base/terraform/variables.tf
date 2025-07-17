@@ -278,7 +278,7 @@ variable "enable_slurm_operator" {
   default     = false
 }
 
-variable "deploy_slurm_cluster" {
+variable "enable_slurm_cluster" {
   description = "Deploy default slurm cluster"
   type        = bool
   default     = false
