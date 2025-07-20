@@ -265,13 +265,34 @@ variable "aibrix_stack_version" {
   default     = "v0.2.1"
 }
 
-# Slinky Slurm Specific Variables
+# AWS Load Balancer Controller Variables
+variable "enable_aws_load_balancer_controller" {
+  description = "Enable the AWS Load Balancer Controller" 
+  type        = bool
+  default     = true
+}
+
+variable "enable_service_mutator_webhook" {
+  description = "Enable service-mutator webhook for AWS Load Balancer Controller"
+  type        = bool
+  default     = false
+}
+
+# Ingress-Nginx Controller  
+variable "enable_ingress_nginx" {
+  description = "Enable ingress-nginx addon"
+  type        = bool
+  default     = true
+}
+
+# Cert Manager 
 variable "enable_cert_manager" {
   description = "Enable cert-manager addon"
   type        = bool
   default     = false
 }
 
+# Slinky Slurm Specific Variables
 variable "enable_slurm_operator" {
   description = "Enable slurm-operator addon"
   type        = bool
@@ -300,16 +321,4 @@ variable "ssh_key" {
   description = "SSH key for login pod access"
   type        = string
   default     = ""
-}
-
-variable "enable_ingress_nginx" {
-  description = "Enable ingress-nginx addon"
-  type        = bool
-  default     = true
-}
-
-variable "enable_service_mutator_webhook" {
-  description = "Enable service-mutator webhook for AWS Load Balancer Controller"
-  type        = bool
-  default     = false
 }
