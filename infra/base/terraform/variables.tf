@@ -265,6 +265,66 @@ variable "aibrix_stack_version" {
   default     = "v0.2.1"
 }
 
+# Enable NVIDIA DRA Driver addon
+variable "enable_nvidia_dra_driver" {
+  description = "Enable NVIDIA DRA Driver addon"
+  type        = bool
+  default     = false
+}
+
+variable "enable_nvidia_gpu_operator" {
+  description = <<-EOF
+    Enable NVIDIA GPU Operator
+
+    Components deployed:
+    - Device Plugin (GPU resource scheduling)
+    - DCGM Exporter (GPU metrics and monitoring)
+    - Node Feature Discovery (NFD - hardware labeling)
+    - GPU Feature Discovery (GFD - GPU-specific labeling)
+    - MIG Manager (Multi-Instance GPU partitioning)
+    - Container Toolkit (GPU container runtime)
+    - Operator Controller (lifecycle management)
+
+    Note: Drivers are NOT installed (pre-installed on EKS AMI)
+    Use when: Advanced GPU management, MIG partitioning, comprehensive monitoring
+  EOF
+  type        = bool
+  default     = false
+}
+
+variable "enable_nvidia_device_plugin" {
+  description = <<-EOF
+    Enable standalone NVIDIA Device Plugin chart (only when GPU Operator is disabled)
+
+    Components deployed:
+    - Device Plugin (GPU resource scheduling)
+    - GPU Feature Discovery (GFD - GPU-specific labeling)
+    - Node Feature Discovery (NFD - hardware detection and labeling)
+      └── NFD Garbage Collector
+      └── NFD Topology Updater
+      └── NFD Worker
+
+    Note: Includes labeling and discovery but NO MIG support or advanced management
+    Use when: Need GPU scheduling + node labeling without full operator complexity
+  EOF
+  type        = bool
+  default     = true
+}
+
+variable "enable_nvidia_dcgm_exporter" {
+  description = <<-EOF
+    Enable standalone NVIDIA DCGM Exporter (only when GPU Operator is disabled)
+
+    Components deployed:
+    - DCGM Exporter only (GPU metrics collection for Prometheus)
+
+    Note: Requires Device Plugin for GPU detection
+    Use when: Need GPU monitoring without full GPU Operator
+  EOF
+  type        = bool
+  default     = true
+}
+
 # AWS Load Balancer Controller Variables
 variable "enable_aws_load_balancer_controller" {
   description = "Enable the AWS Load Balancer Controller" 
